@@ -55,7 +55,7 @@ The action will validate given installation id within the available installation
 ```
   - name: my-app-install tokens
     id: my-app
-    uses: febaisi/action-github-app-token@v2
+    uses: febaisi/action-github-app-jwt-installation-token@v2
     with:
       app_id: ${{ secrets.APP_ID }}
       base64_pem_key: ${{ secrets.BASE64_PEM_KEY }}
