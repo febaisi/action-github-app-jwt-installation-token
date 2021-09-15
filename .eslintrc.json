@@ -1,6 +1,5 @@
 {
     "plugins": ["jest", "@typescript-eslint"],
-    "extends": ["sentry"],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
       "ecmaVersion": 9,
