@@ -17,13 +17,15 @@ $ yarn dist
 ## Inputs
 | Key | Desc | Required |
 | ------ | ------ | ------ |
-| app_id | Github App ID | yes |
-| base64_pem_key | Base64 encoded Github App PEM Key | yes |
+| app_id | Github App ID | yes | <tr></tr>
+| base64_pem_key | Base64 encoded Github App PEM Key | yes | 
 | installation_id | Github App Installation ID | no |
 
 ## Outputs
-jwt_token: Github App Token <br/>
-installation_access_token: Github App Installation access-token <br/>
+| Key | Desc |
+| ------ | ------ |
+| jwt_token | Github App JWT |
+| installation_access_token | Github App Installation access-token |
 
 ## Encoding a PEM Key file
 ```sh
@@ -31,7 +33,7 @@ $ cat pem_file_path.pem | base64
 ```
 
 ## Usage
-Github App ID and encoded PEM File are always required. <br/>
+Github App ID and encoded PEM File are always required.
 Provide an installation ID if seeking an installation access token.<br>
 The action will validate given installation id within the available installations for its Gihub App ID.
 
