@@ -32,5 +32,5 @@ jobs:
     - name: Integration test - checkout private repo
       uses: actions/checkout@v2
       with:
-        repository: getsentry/action-github-app-token-test
+        repository: febaisi/action-github-app-jwt-installation-token
         token: ${{ steps.my-app.outputs.token }}
