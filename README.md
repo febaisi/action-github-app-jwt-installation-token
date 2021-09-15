@@ -1,7 +1,6 @@
-# action-github-app-token
+# action-github-app-jwt-installation-token
 
-This uses GitHub Apps to fetch a GitHub auth token for a GitHub App installation.
-The GitHub App is used to authorize API access across multiple repositories.
+This uses Octokit to fetch a GitHub App JWT as well as the installation access token if installationId is given.
 
 ## Development
 
@@ -15,21 +14,56 @@ Build the typescript and package it for distribution
 $ yarn dist
 ```
 
-## Usage
+## Inputs
+| Key | Desc | Required |
+| ------ | ------ | ------ |
+| app_id | Github App ID | yes |
+| base64_pem_key | Base64 encoded Github App PEM Key | yes |
+| installation_id | Github App Installation ID | no |
 
-You will need to provide the GitHub App ID and private key. The action will then provide a `token` output.
+## Outputs
+jwt_token: Github App Token <br/>
+installation_access_token: Github App Installation access-token <br/>
 
+## Encoding a PEM Key file
+```sh
+$ cat pem_file_path.pem | base64
 ```
-  - name: my-app-install token
+
+## Usage
+Github App ID and encoded PEM File are always required. <br/>
+Provide an installation ID if seeking an installation access token.<br>
+The action will validate given installation id within the available installations for its Gihub App ID.
+
+## Sample1 - Checkout a different repo
+```
+  - name: my-app-install tokens
     id: my-app
-    uses: getsentry/action-github-app-token@v1
+    uses: febaisi/action-github-app-token@v2
     with:
       app_id: ${{ secrets.APP_ID }}
-      private_key: ${{ secrets.APP_PRIVATE_KEY }}
+      base64_pem_key: ${{ secrets.BASE64_PEM_KEY }}
 
   - name: Checkout private repo
     uses: actions/checkout@v2
     with:
       repository: getsentry/my-private-repo
-      token: ${{ steps.my-app.outputs.token }}
+      token: ${{ steps.my-app.outputs.jwt_token }}
 ```
+
+## Sample2 - Clone another repo
+```
+  - name: my-app-install tokens
+    id: my-app
+    uses: febaisi/action-github-app-token@v2
+    with:
+      app_id: ${{ secrets.APP_ID }}
+      base64_pem_key: ${{ secrets.BASE64_PEM_KEY }}
+      installation_id: ${{ secrets.INSTALLATION_ID }}
+
+  - uses: actions/checkout@v2
+  - name: Clone an extra repo
+    run: git clone https://x-access-token:${{ steps.my-app.outputs.installation_access_token }}@github.com/owner/repo.git
+
+```
+
